@@ -3,6 +3,8 @@ using UnityEngine;
 public class Objects : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int health = 1;
+    public float dist = 2f;
     void Start()
     {
     }
@@ -11,20 +13,19 @@ public class Objects : MonoBehaviour
     void Update()
     {
         if (Input.touchCount > 0) {
-            Debug.Log("touched");
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began) {
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 1f);
                 RaycastHit hit;
-
-                Debug.Log("phase begin");
-
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit, dist))
                 {
-                    Destroy(gameObject);
+                    health -= 1;
                 }
             }
+        }
+        if(health <= 0)
+        {
+            Destroy(gameObject);
         }
         
     }
